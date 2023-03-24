@@ -2,8 +2,8 @@ const hre = require('hardhat');
 
 // npx hardhat run --network goerli scripts/deploy.js
 async function main() {
-    const Lottery = await hre.ethers.getContractFactory('Lottery');
-    const token = await Lottery.deploy();
+    const Transform = await hre.ethers.getContractFactory('Transform');
+    const token = await Transform.deploy();
 
     await token.deployed();
 

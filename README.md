@@ -77,7 +77,7 @@ solc-select use 0.8.13
 File of the current folder will be in `/share` folder of the container. When running a command with slither it look like:
 
 ```
-slither /share/src/Lottery.sol --config-file /share/slither.config.json
+slither /share/src/Transform.sol --config-file /share/slither.config.json
 ```
 
 # Forge
@@ -93,7 +93,7 @@ anvil
 Then run the following script with one of the private keys given to you by Anvil:
 
 ```
-forge script scripts/Lottery.s.sol:DeployToken --fork-url http://localhost:8545 --private-key $PRIVATE_KEY --broadcast -vvvv
+forge script scripts/Transform.s.sol:DeployToken --fork-url http://localhost:8545 --private-key $PRIVATE_KEY --broadcast -vvvv
 ```
 
 ## Deploy: existing network
@@ -102,7 +102,7 @@ Create an `.env` file based on `.env.example` & fill it with your data. Then run
 
 ```
 source .env
-forge script scripts/Lottery.s.sol:DeployToken --rpc-url $RPC_URL --private-key $PRIVATE_KEY --broadcast --verify --etherscan-api-key $EXPLORER_KEY -vvvv
+forge script scripts/Transform.s.sol:DeployToken --rpc-url $RPC_URL --private-key $PRIVATE_KEY --broadcast --verify --etherscan-api-key $EXPLORER_KEY -vvvv
 ```
 
 ## Other commands
