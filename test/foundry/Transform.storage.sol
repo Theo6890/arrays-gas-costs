@@ -21,6 +21,12 @@ contract TransformTest is Test {
         instance.transformRandoms_result_to_storage(50_000);
     }
 
+    function test_transformRandomsToMatchRange_result_to_storage_45_000()
+        public
+    {
+        instance.transformRandoms_result_to_storage(45_000);
+    }
+
     function test_transformRandomsToMatchRange_result_to_storage_30_000()
         public
     {
@@ -62,6 +68,12 @@ contract TransformTest is Test {
         public
     {
         instance.YUL_transformRandoms_result_to_storage(50_000);
+    }
+
+    function test_transformRandomsToMatchRange_result_to_storage_Yul_45_000()
+        public
+    {
+        instance.YUL_transformRandoms_result_to_storage(45_000);
     }
 
     function test_transformRandomsToMatchRange_result_to_storage_Yul_30_000()
