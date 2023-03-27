@@ -21,7 +21,7 @@ contract TransformAndPickAddressTest is Test {
     function setUp() public {
         instance = new TransformAndPickAddress();
 
-        for (uint256 i; i < 5_000; ++i) {
+        for (uint256 i; i < 50_000; ++i) {
             addresses_50_000.push(
                 makeAddr(string.concat("test", Strings.toString(i)))
             );
@@ -39,69 +39,109 @@ contract TransformAndPickAddressTest is Test {
                                  SOLIDITY
     //////////////////////////////////////////////////////////////*/
     function test_transformAndPick_result_to_storage_50_000() public {
-        instance.transformAndPick_result_to_storage(addresses_50_000);
+        address[] memory result = instance.transformAndPick_result_to_storage(
+            addresses_50_000
+        );
+        assertEq(result.length, 50_000);
     }
 
     function test_transformAndPick_result_to_storage_45_000() public {
-        instance.transformAndPick_result_to_storage(addresses_45_000);
+        address[] memory result = instance.transformAndPick_result_to_storage(
+            addresses_45_000
+        );
+        assertEq(result.length, 45_000);
     }
 
     function test_transformAndPick_result_to_storage_30_000() public {
-        instance.transformAndPick_result_to_storage(addresses_30_000);
+        address[] memory result = instance.transformAndPick_result_to_storage(
+            addresses_30_000
+        );
+        assertEq(result.length, 30_000);
     }
 
     function test_transformAndPick_result_to_storage_20_000() public {
-        instance.transformAndPick_result_to_storage(addresses_20_000);
+        address[] memory result = instance.transformAndPick_result_to_storage(
+            addresses_20_000
+        );
+        assertEq(result.length, 20_000);
     }
 
     function test_transformAndPick_result_to_storage_10_000() public {
-        instance.transformAndPick_result_to_storage(addresses_10_000);
+        address[] memory result = instance.transformAndPick_result_to_storage(
+            addresses_10_000
+        );
+        assertEq(result.length, 10_000);
     }
 
     function test_transformAndPick_result_to_storage_5_000() public {
-        instance.transformAndPick_result_to_storage(addresses_5_000);
+        address[] memory result = instance.transformAndPick_result_to_storage(
+            addresses_5_000
+        );
+        assertEq(result.length, 5_000);
     }
 
     function test_transformAndPick_result_to_storage_1_000() public {
-        instance.transformAndPick_result_to_storage(addresses_1_000);
+        address[] memory result = instance.transformAndPick_result_to_storage(
+            addresses_1_000
+        );
+        assertEq(result.length, 1_000);
     }
 
     function test_transformAndPick_result_to_storage_500() public {
-        instance.transformAndPick_result_to_storage(addresses_500);
+        address[] memory result = instance.transformAndPick_result_to_storage(
+            addresses_500
+        );
+        assertEq(result.length, 500);
     }
 
     /*//////////////////////////////////////////////////////////////
                                  YUL
     //////////////////////////////////////////////////////////////*/
     function test_transformAndPick_result_to_storage_Yul_50_000() public {
-        instance.YUL_transformAndPick_result_to_storage(addresses_50_000);
+        address[] memory result = instance
+            .YUL_transformAndPick_result_to_storage(addresses_50_000);
+        assertEq(result.length, 50_000);
     }
 
     function test_transformAndPick_result_to_storage_Yul_45_000() public {
-        instance.YUL_transformAndPick_result_to_storage(addresses_45_000);
+        address[] memory result = instance
+            .YUL_transformAndPick_result_to_storage(addresses_45_000);
+        assertEq(result.length, 45_000);
     }
 
     function test_transformAndPick_result_to_storage_Yul_30_000() public {
-        instance.YUL_transformAndPick_result_to_storage(addresses_30_000);
+        address[] memory result = instance
+            .YUL_transformAndPick_result_to_storage(addresses_30_000);
+        assertEq(result.length, 30_000);
     }
 
     function test_transformAndPick_result_to_storage_Yul_20_000() public {
-        instance.YUL_transformAndPick_result_to_storage(addresses_20_000);
+        address[] memory result = instance
+            .YUL_transformAndPick_result_to_storage(addresses_20_000);
+        assertEq(result.length, 20_000);
     }
 
     function test_transformAndPick_result_to_storage_Yul_10_000() public {
-        instance.YUL_transformAndPick_result_to_storage(addresses_10_000);
+        address[] memory result = instance
+            .YUL_transformAndPick_result_to_storage(addresses_10_000);
+        assertEq(result.length, 10_000);
     }
 
     function test_transformAndPick_result_to_storage_Yul_5_000() public {
-        instance.YUL_transformAndPick_result_to_storage(addresses_5_000);
+        address[] memory result = instance
+            .YUL_transformAndPick_result_to_storage(addresses_5_000);
+        assertEq(result.length, 5_000);
     }
 
     function test_transformAndPick_result_to_storage_Yul_1_000() public {
-        instance.YUL_transformAndPick_result_to_storage(addresses_1_000);
+        address[] memory result = instance
+            .YUL_transformAndPick_result_to_storage(addresses_1_000);
+        assertEq(result.length, 1_000);
     }
 
     function test_transformAndPick_result_to_storage_Yul_500() public {
-        instance.YUL_transformAndPick_result_to_storage(addresses_500);
+        address[] memory result = instance
+            .YUL_transformAndPick_result_to_storage(addresses_500);
+        assertEq(result.length, 500);
     }
 }
