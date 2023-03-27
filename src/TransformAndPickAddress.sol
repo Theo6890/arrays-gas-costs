@@ -16,23 +16,7 @@ contract TransformAndPickAddress {
         randoms.push(12489031409234);
     }
 
-    /*//////////////////////////////////////////////////////////////
-                                 RESULT IN MEMORY
-    //////////////////////////////////////////////////////////////*/
-    /// @dev consume 38M gas with `length_` = 50,000
-    function transformAndPick_result_to_memory(
-        address[] memory addresses
-    ) external view returns (address[] memory transformed) {
-        uint256 length = addresses.length;
-        transformed = new address[](length);
-        uint256[] memory randoms_ = randoms; // saves ~11.5M gas
-
-        for (uint256 i = 0; i < length; i++) {
-            transformed[i] = addresses[randoms_[0] % length];
-        }
-    }
-
-    /// @dev consume 28M gas with `length_` = 50,000
+    // TODO: try if calldata is better than memory
     function YUL_transformAndPick_result_to_memory(
         address[] memory addresses
     ) external view returns (address[] memory transformed) {
@@ -60,22 +44,6 @@ contract TransformAndPickAddress {
                 )
             }
         }
-    }
-
-    /*//////////////////////////////////////////////////////////////
-                                 RESULT IN STORAGE
-    //////////////////////////////////////////////////////////////*/
-    function transformAndPick_result_to_storage(
-        address[] memory addresses
-    ) external returns (address[] memory transformed) {
-        uint256 length = addresses.length;
-        transformed = new address[](length);
-        uint256[] memory randoms_ = randoms; // saves ~11.5M gas
-
-        for (uint256 i = 0; i < length; i++) {
-            transformed[i] = addresses[randoms_[0] % length];
-        }
-        result = transformed;
     }
 
     function YUL_transformAndPick_result_to_storage(

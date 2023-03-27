@@ -36,65 +36,6 @@ contract TransformAndPickAddressTest is Test {
     }
 
     /*//////////////////////////////////////////////////////////////
-                            SOLIDITY
-    //////////////////////////////////////////////////////////////*/
-    function test_transformAndPick_result_to_memory_50_000() public {
-        address[] memory result = instance.transformAndPick_result_to_memory(
-            addresses_50_000
-        );
-        assertEq(result.length, 50_000);
-    }
-
-    function test_transformAndPick_result_to_memory_45_000() public {
-        address[] memory result = instance.transformAndPick_result_to_memory(
-            addresses_45_000
-        );
-        assertEq(result.length, 45_000);
-    }
-
-    function test_transformAndPick_result_to_memory_30_000() public {
-        address[] memory result = instance.transformAndPick_result_to_memory(
-            addresses_30_000
-        );
-        assertEq(result.length, 30_000);
-    }
-
-    function test_transformAndPick_result_to_memory_20_000() public {
-        address[] memory result = instance.transformAndPick_result_to_memory(
-            addresses_20_000
-        );
-        assertEq(result.length, 20_000);
-    }
-
-    function test_transformAndPick_result_to_memory_10_000() public {
-        address[] memory result = instance.transformAndPick_result_to_memory(
-            addresses_10_000
-        );
-        assertEq(result.length, 10_000);
-    }
-
-    function test_transformAndPick_result_to_memory_5_000() public {
-        address[] memory result = instance.transformAndPick_result_to_memory(
-            addresses_5_000
-        );
-        assertEq(result.length, 5_000);
-    }
-
-    function test_transformAndPick_result_to_memory_1_000() public {
-        address[] memory result = instance.transformAndPick_result_to_memory(
-            addresses_1_000
-        );
-        assertEq(result.length, 1_000);
-    }
-
-    function test_transformAndPick_result_to_memory_500() public {
-        address[] memory result = instance.transformAndPick_result_to_memory(
-            addresses_500
-        );
-        assertEq(result.length, 500);
-    }
-
-    /*//////////////////////////////////////////////////////////////
                                  YUL
     //////////////////////////////////////////////////////////////*/
     function test_transformAndPick_result_to_memory_Yul_50_000() public {
