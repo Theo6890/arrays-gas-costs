@@ -12,64 +12,72 @@ contract TransformAndPickAddress {
     uint256[] public randoms;
     address[] public result;
 
-    constructor() {
-        randoms.push(12489031409234);
+    function setRandoms(uint256[] memory _randoms) external {
+        randoms = _randoms;
     }
 
     // TODO: try if calldata is better than memory
     function YUL_transformAndPick_result_to_memory(
-        address[] memory addresses
+        address[] memory addresses,
+        uint256 amountOfWinners
     ) external view returns (address[] memory transformed) {
-        uint256 length_ = addresses.length;
-        transformed = new address[](length_);
+        transformed = new address[](amountOfWinners);
         uint256[] memory randoms_ = randoms; // saves ~5,500 gas
+        uint256 randomAtIndex;
 
         // yul saves ~10M gas
         assembly {
-            // reads randoms at index 0
-            let randomAtIndex := mload(add(randoms_, 0x20))
-
             // for memory array index 0 is length, then data stored from 1 to length
             for {
                 let i := 1
-            } lt(i, add(length_, 1)) {
+            } lt(i, add(amountOfWinners, 1)) {
                 i := add(i, 1)
             } {
-                // transformed[i] = randomAtIndex % length_
+                // reads: randoms_[i]
+                randomAtIndex := mload(add(randoms_, mul(i, 0x20)))
+
+                // transformed[i] = randomAtIndex % amountOfWinners
                 mstore(
                     add(transformed, mul(i, 0x20)), // transformed[i]
                     mload(
-                        add(addresses, mul(mod(randomAtIndex, length_), 0x20))
-                    ) // load data at: addresses[randoms_[0] % length]
+                        add(
+                            addresses,
+                            mul(mod(randomAtIndex, amountOfWinners), 0x20)
+                        )
+                    ) // load data at: addresses[randoms_[0] % amountOfWinners]
                 )
             }
         }
     }
 
     function YUL_transformAndPick_result_to_storage(
-        address[] memory addresses
+        address[] memory addresses,
+        uint256 amountOfWinners
     ) external returns (address[] memory transformed) {
-        uint256 length_ = addresses.length;
-        transformed = new address[](length_);
+        transformed = new address[](amountOfWinners);
         uint256[] memory randoms_ = randoms; // saves ~5,500 gas
+        uint256 randomAtIndex;
 
         // yul saves ~10M gas
         assembly {
-            // reads randoms at index 0
-            let randomAtIndex := mload(add(randoms_, 0x20))
-
             // for memory array index 0 is length, then data stored from 1 to length
             for {
                 let i := 1
-            } lt(i, add(length_, 1)) {
+            } lt(i, add(amountOfWinners, 1)) {
                 i := add(i, 1)
             } {
-                // transformed[i] = randomAtIndex % length_
+                // reads: randoms_[i]
+                randomAtIndex := mload(add(randoms_, mul(i, 0x20)))
+
+                // store at: transformed[i]
                 mstore(
                     add(transformed, mul(i, 0x20)), // transformed[i]
                     mload(
-                        add(addresses, mul(mod(randomAtIndex, length_), 0x20))
-                    ) // load data at: addresses[randoms_[0] % length]
+                        add(
+                            addresses,
+                            mul(mod(randomAtIndex, amountOfWinners), 0x20)
+                        )
+                    ) // get data of: addresses[randoms_[0] % amountOfWinners]
                 )
             }
         }
