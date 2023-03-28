@@ -36,7 +36,7 @@ contract TransformAndPickAddress {
                 // reads: randoms_[i]
                 randomAtIndex := mload(add(randoms_, mul(i, 0x20)))
 
-                // winners[i] = randomAtIndex % amountOfWinners
+                // winners[i] = addresses[randomAtIndex % amountOfWinners] (in memory)
                 mstore(
                     add(winners, mul(i, 0x20)), // winners[i]
                     mload(
@@ -44,7 +44,7 @@ contract TransformAndPickAddress {
                             addresses,
                             mul(mod(randomAtIndex, amountOfWinners), 0x20)
                         )
-                    ) // load data at: addresses[randoms_[0] % amountOfWinners]
+                    ) // load data at: addresses[randomAtIndex % amountOfWinners]
                 )
             }
         }
@@ -69,7 +69,7 @@ contract TransformAndPickAddress {
                 // reads: randoms_[i]
                 randomAtIndex := mload(add(randoms_, mul(i, 0x20)))
 
-                // store at: winners[i]
+                // winners[i] = addresses[randomAtIndex % amountOfWinners] (in storage)
                 mstore(
                     add(winners, mul(i, 0x20)), // winners[i]
                     mload(
@@ -77,7 +77,7 @@ contract TransformAndPickAddress {
                             addresses,
                             mul(mod(randomAtIndex, amountOfWinners), 0x20)
                         )
-                    ) // get data of: addresses[randoms_[0] % amountOfWinners]
+                    ) // get data of: addresses[randomAtIndex % amountOfWinners]
                 )
             }
         }
