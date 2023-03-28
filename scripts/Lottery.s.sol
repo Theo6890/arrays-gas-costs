@@ -2,7 +2,7 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Script.sol";
-import "../src/Lottery.sol";
+import "../src/Transform.sol";
 
 contract DeployToken is Script {
     function run() external {
@@ -11,7 +11,7 @@ contract DeployToken is Script {
         uint256 privateKey = vm.deriveKey(SEED, 0); // address at index 0
         vm.startBroadcast(privateKey);
 
-        Lottery token = new Lottery();
+        Transform token = new Transform();
 
         vm.stopBroadcast();
     }
