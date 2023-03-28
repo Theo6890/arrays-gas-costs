@@ -20,7 +20,7 @@ As we can see by running the test with gas reports `forge test --gas-report --mt
 
 ### Transform **_X_** Randoms On-Chain
 
-Saves resuts to memory as storage is way too expensive and not feasible as it goes above the 30M gas limit. Adds **50-90%** gas cost if we emit an event to byass storage saving costs.
+**Saves resuts to memory** as storage is way too expensive and not feasible as it goes above the 30M gas limit. Adds **50-90%** gas cost if we emit an event to byass storage saving costs.
 
 | Amount of Randoms | Gas Usage  | Price/transaction - BSC | Price/tx - Polygon | Gas Price per Unit (Gwei) | $/Gwei - BNB at $350 | $/Gwei - MATIC at $1.5 |
 | ----------------- | ---------- | ----------------------- | ------------------ | ------------------------- | -------------------- | ---------------------- |
@@ -78,14 +78,14 @@ Transforming while picking address costs 3x more gas than transforming uints onl
 
 ### In Memory Results
 
-| Function Name                         | min     | avg        | median    | max        |
-| ------------------------------------- | ------- | ---------- | --------- | ---------- |
-| YUL_transformRandoms_result_to_memory | 91,190  | 9,209,888  | 4,479,381 | 27,939,967 |
-| YUL_transformAndPick_result_to_memory | 176,977 | 19,826,991 | 9,411,812 | 60,656,696 |
+| Function Name                                                                   | min                          | avg                                     | median                                 | max                                       |
+| ------------------------------------------------------------------------------- | ---------------------------- | --------------------------------------- | -------------------------------------- | ----------------------------------------- |
+| YUL_transformRandoms_result_to_memory + YUL_pickAfterTransform_result_to_memory | 27,418 + 69,740 = **97,158** | 7,187,000 + 17,143,046 = **24,330,046** | 2,190,984 + 4,865,184 = **7,056, 168** | 22,268,046 + 95,547,682 = **117,815,728** |
+| YUL_transformAndPick_result_to_memory                                           | 176,977                      | 19,826,991                              | 9,411,812                              | 60,656,696                                |
 
 ### In Storage Results
 
-| Function Name                          | min        | avg         | median      | max           |
-| -------------------------------------- | ---------- | ----------- | ----------- | ------------- |
-| YUL_transformRandoms_result_to_storage | 135,723    | 9,254,421   | 4,523,914   | 27,984,500    |
-| YUL_transformAndPick_result_to_storage | 11,299,318 | 468,011,832 | 342,434,153 | 1,170,679,037 |
+| Function Name                                                                     | min                                   | avg                                         | median                                      | max                                           |
+| --------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------- | ------------------------------------------- | --------------------------------------------- |
+| YUL_transformRandoms_result_to_storage + YUL_pickAfterTransform_result_to_storage | 1,712,509 + 1,757,123 = **3,469,632** | 22,233,9631 + 23,2586,829 = **454,926,460** | 113,063,325 + 11,5887,567 = **228,950,892** | 620,880,387 + 69,4970,065 = **1,315,850,452** |
+| YUL_transformAndPick_result_to_storage                                            | 11,299,318                            | 468,011,832                                 | 342,434,153                                 | 1,170,679,037                                 |
