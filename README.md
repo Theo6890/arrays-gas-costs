@@ -37,6 +37,21 @@ _Note: **Amount of Randoms** = amount of loops_
 
 ### Transform Randoms While Reveal **_X_** Winners
 
+### In Calldata
+
+| Amount Participants | Amount Winners | Gas Limit / Used | Price/transaction - BSC | Price/tx - Polygon | Gas Price per Unit (Gwei) | $/Gwei - BNB at $350 | $/Gwei - MATIC at $1.5 |
+| ------------------- | -------------- | ---------------- | ----------------------- | ------------------ | ------------------------- | -------------------- | ---------------------- |
+| 50,000              | 27,000         | 22,862,232       | $142.89                 | $0.86              | 25                        | $ 0.000000250        | $ 0.000000002          |
+| 40,000              | 22,000         | 16,695,123       | $104.34                 | $0.63              | 25                        | $ 0.000000250        | $ 0.000000002          |
+| 35,000              | 19,000         | 13,416,732       | $83.85                  | $0.50              | 25                        | $ 0.000000250        | $ 0.000000002          |
+| 30,000              | 11,000         | 6,221,232        | $38.88                  | $0.23              | 25                        | $ 0.000000250        | $ 0.000000002          |
+| 20,000              | 5,000          | 2,301,170        | $14.38                  | $0.09              | 25                        | $ 0.000000250        | $ 0.000000002          |
+| 10,000              | 2,300          | 950,052          | $5.94                   | $0.04              | 25                        | $ 0.000000250        | $ 0.000000002          |
+| 5,000               | 834            | 323,800          | $2.02                   | $0.01              | 25                        | $ 0.000000250        | $ 0.000000002          |
+| 1,000               | 124            | 47,658           | $0.30                   | $0.0018            | 25                        | $ 0.000000250        | $ 0.000000002          |
+
+Note: If we emit an event containing the winners there an increase of **_40-90%_** in gas usage. This might be helpful to store the winners on-chain.
+
 #### In Memory
 
 In this case we need to take both the size of the array (from which amount of winners), the amount of winners & the size of the received randoms into account.
@@ -53,6 +68,8 @@ In this case we need to take both the size of the array (from which amount of wi
 | 1,000               | 124            | 155,996          | $0.97                   | $0.0058            | 25                        | $ 0.000000250        |
 
 Note: If we emit an event containing the winners there an increase of **_7-9%_** in gas usage. This might be helpful to store the winners on-chain.
+
+### In calldata, returned as event
 
 #### In Storage
 
