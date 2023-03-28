@@ -19,40 +19,41 @@ contract Transform {
     /*//////////////////////////////////////////////////////////////
                                  RESULT IN MEMORY
     //////////////////////////////////////////////////////////////*/
-    /// @dev consume 38M gas with `length_` = 50,000
+    /// @dev consume 38M gas with `amountRandToTransform_` = 50,000
     function transformRandoms_result_to_memory(
-        uint256 length
+        uint256 amountRandToTransform
     ) external view returns (uint256[] memory transformed) {
-        transformed = new uint256[](length);
+        transformed = new uint256[](amountRandToTransform);
         uint256[] memory randoms_ = randoms; // saves ~11.5M gas
 
-        for (uint256 i = 0; i < length; i++) {
-            transformed[i] = randoms_[0] % length;
+        for (uint256 i = 0; i < amountRandToTransform; ++i) {
+            transformed[i] = randoms_[i] % amountRandToTransform;
         }
     }
 
-    /// @dev consume 28M gas with `length_` = 50,000
+    /// @dev consume 28M gas with `amountRandToTransform_` = 50,000
     function YUL_transformRandoms_result_to_memory(
-        uint256 length_
+        uint256 amountRandToTransform_
     ) external view returns (uint256[] memory transformed) {
-        transformed = new uint256[](length_);
+        transformed = new uint256[](amountRandToTransform_);
         uint256[] memory randoms_ = randoms; // saves ~5,500 gas
+        uint256 randomAtIndex;
 
         // yul saves ~10M gas
         assembly {
-            // reads randoms at index 0
-            let randomAtIndex := mload(add(randoms_, 0x20))
-
-            // for memory array index 0 is length, then data stored from 1 to length
+            // for memory array index 0 is amountRandToTransform, then data stored from 1 to amountRandToTransform
             for {
                 let i := 1
-            } lt(i, add(length_, 1)) {
+            } lt(i, add(amountRandToTransform_, 1)) {
                 i := add(i, 1)
             } {
-                // transformed[i] = randomAtIndex % length_
+                // reads: randoms_[i]
+                randomAtIndex := mload(add(randoms_, mul(i, 0x20)))
+
+                // transformed[i] = randomAtIndex % amountRandToTransform_
                 mstore(
                     add(transformed, mul(i, 0x20)), // transformed[i]
-                    mod(randomAtIndex, length_) // randomAtIndex % length_
+                    mod(randomAtIndex, amountRandToTransform_) // randomAtIndex % amountRandToTransform_
                 )
             }
         }
@@ -62,38 +63,39 @@ contract Transform {
                                  RESULT IN STORAGE
     //////////////////////////////////////////////////////////////*/
     function transformRandoms_result_to_storage(
-        uint256 length
+        uint256 amountRandToTransform
     ) external returns (uint256[] memory transformed) {
-        transformed = new uint256[](length);
+        transformed = new uint256[](amountRandToTransform);
         uint256[] memory randoms_ = randoms; // saves ~11.5M gas
 
-        for (uint256 i = 0; i < length; i++) {
-            transformed[i] = randoms_[0] % length;
+        for (uint256 i = 0; i < amountRandToTransform; ++i) {
+            transformed[i] = randoms_[i] % amountRandToTransform;
         }
         result = randoms_;
     }
 
     function YUL_transformRandoms_result_to_storage(
-        uint256 length_
+        uint256 amountRandToTransform_
     ) external returns (uint256[] memory transformed) {
-        transformed = new uint256[](length_);
+        transformed = new uint256[](amountRandToTransform_);
         uint256[] memory randoms_ = randoms; // saves ~5,500 gas
+        uint256 randomAtIndex;
 
         // yul saves ~10M gas
         assembly {
-            // reads randoms at index 0
-            let randomAtIndex := mload(add(randoms_, 0x20))
-
-            // for memory array index 0 is length, then data stored from 1 to length
+            // for memory array index 0 is amountRandToTransform, then data stored from 1 to amountRandToTransform
             for {
                 let i := 1
-            } lt(i, add(length_, 1)) {
+            } lt(i, add(amountRandToTransform_, 1)) {
                 i := add(i, 1)
             } {
-                // transformed[i] = randomAtIndex % length_
+                // reads: randoms_[i]
+                randomAtIndex := mload(add(randoms_, mul(i, 0x20)))
+
+                // transformed[i] = randomAtIndex % amountRandToTransform_
                 mstore(
                     add(transformed, mul(i, 0x20)), // transformed[i]
-                    mod(randomAtIndex, length_) // randomAtIndex % length_
+                    mod(randomAtIndex, amountRandToTransform_) // randomAtIndex % amountRandToTransform_
                 )
             }
         }
