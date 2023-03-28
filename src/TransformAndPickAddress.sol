@@ -20,8 +20,8 @@ contract TransformAndPickAddress {
     function YUL_transformAndPick_result_to_memory(
         address[] memory addresses,
         uint256 amountOfWinners
-    ) external view returns (address[] memory transformed) {
-        transformed = new address[](amountOfWinners);
+    ) external view returns (address[] memory winners) {
+        winners = new address[](amountOfWinners);
         uint256[] memory randoms_ = randoms; // saves ~5,500 gas
         uint256 randomAtIndex;
 
@@ -36,9 +36,9 @@ contract TransformAndPickAddress {
                 // reads: randoms_[i]
                 randomAtIndex := mload(add(randoms_, mul(i, 0x20)))
 
-                // transformed[i] = randomAtIndex % amountOfWinners
+                // winners[i] = randomAtIndex % amountOfWinners
                 mstore(
-                    add(transformed, mul(i, 0x20)), // transformed[i]
+                    add(winners, mul(i, 0x20)), // winners[i]
                     mload(
                         add(
                             addresses,
@@ -53,8 +53,8 @@ contract TransformAndPickAddress {
     function YUL_transformAndPick_result_to_storage(
         address[] memory addresses,
         uint256 amountOfWinners
-    ) external returns (address[] memory transformed) {
-        transformed = new address[](amountOfWinners);
+    ) external returns (address[] memory winners) {
+        winners = new address[](amountOfWinners);
         uint256[] memory randoms_ = randoms; // saves ~5,500 gas
         uint256 randomAtIndex;
 
@@ -69,9 +69,9 @@ contract TransformAndPickAddress {
                 // reads: randoms_[i]
                 randomAtIndex := mload(add(randoms_, mul(i, 0x20)))
 
-                // store at: transformed[i]
+                // store at: winners[i]
                 mstore(
-                    add(transformed, mul(i, 0x20)), // transformed[i]
+                    add(winners, mul(i, 0x20)), // winners[i]
                     mload(
                         add(
                             addresses,
@@ -82,6 +82,6 @@ contract TransformAndPickAddress {
             }
         }
 
-        result = transformed;
+        result = winners;
     }
 }
