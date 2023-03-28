@@ -12,8 +12,8 @@ contract Transform {
     uint256[] public randoms;
     uint256[] public result;
 
-    constructor() {
-        randoms.push(12489031409234);
+    function setRandoms(uint256[] memory _randoms) external {
+        randoms = _randoms;
     }
 
     /*//////////////////////////////////////////////////////////////
