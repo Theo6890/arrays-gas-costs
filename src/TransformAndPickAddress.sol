@@ -50,7 +50,7 @@ contract TransformAndPickAddress {
         }
     }
 
-    function YUL_transformAndPick_result_to_calldata(
+    function YUL_transformAndPick_parameterIn_calldata(
         address[] calldata addresses,
         uint256 amountOfWinners
     ) external view returns (address[] memory winners) {
