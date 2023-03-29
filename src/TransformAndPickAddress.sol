@@ -50,8 +50,8 @@ contract TransformAndPickAddress {
         }
     }
 
-    function YUL_transformAndPick_parameterIn_calldata(
-        address[] calldata addresses,
+    function YUL_transformAndPick_removeSelectedWinners_inMemory(
+        address[] memory addresses,
         uint256 amountOfWinners
     ) external view returns (address[] memory winners) {
         winners = new address[](amountOfWinners);
@@ -61,6 +61,22 @@ contract TransformAndPickAddress {
         // yul saves ~10M gas
         assembly {
             let memoryPos
+            let newWinnerPos
+
+            // arrayTo[toIndex] = arrayFrom[fromIndex]
+            function storeToFrom(arrayTo, toIndex, arrayFrom, fromIndex) {
+                mstore(add(arrayTo, toIndex), mload(add(arrayFrom, fromIndex)))
+            }
+            // current data <-> last data
+            function swapCurrentAndLast(currentIndexPos, array) {
+                let current := mload(add(array, currentIndexPos))
+                let length := mload(array)
+                let lastElemPos := mul(length, 0x20)
+                // array[i] = array[array.last]
+                storeToFrom(array, currentIndexPos, array, lastElemPos)
+                // array[array.last] = current
+                mstore(add(array, lastElemPos), current)
+            }
 
             for {
                 let i := 0
@@ -71,22 +87,20 @@ contract TransformAndPickAddress {
                 //  - index at 0 is array.length
                 //  - index of data stored starts at 1
                 memoryPos := mul(add(i, 1), 0x20)
-
                 // reads: randoms_[i]
                 randomAtIndex := mload(add(randoms_, memoryPos))
-
-                // memory position, position in calldata, size of data in calldata
-                calldatacopy(
-                    // copy to memory at: winners[i]
-                    add(winners, memoryPos),
-                    // calldata position of: addresses[randomAtIndex % amountOfWinners]
-                    add(
-                        addresses.offset,
-                        // in calldata, index of data stored starts at 0
-                        mul(mod(randomAtIndex, amountOfWinners), 0x20)
-                    ),
+                // add 1 as addresses[] is in memory
+                newWinnerPos := mul(
+                    add(mod(randomAtIndex, amountOfWinners), 1),
                     0x20
                 )
+
+                // winners[i] = addresses[newWinnerPos]
+                storeToFrom(winners, memoryPos, addresses, newWinnerPos)
+                // addresses[newWinnerPos] <-> addresses[array.last]
+                swapCurrentAndLast(newWinnerPos, addresses)
+                // addresses.pop() - deletes addresses[array.last]
+                mstore(addresses, sub(mload(addresses), 1))
             }
         }
     }
