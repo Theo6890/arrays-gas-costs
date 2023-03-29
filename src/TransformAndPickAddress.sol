@@ -51,31 +51,36 @@ contract TransformAndPickAddress {
     }
 
     function YUL_transformAndPick_removeSelectedWinners_inMemory(
-        address[] memory addresses,
+        address[] calldata addrs,
         uint256 amountOfWinners
     ) external view returns (address[] memory winners) {
+        uint256 participants = addrs.length;
+        require(amountOfWinners < participants, "winners >= participants");
+        // saves gas, instead of passing as memory directly
+        address[] memory addresses = addrs;
+
         winners = new address[](amountOfWinners);
         uint256[] memory randoms_ = randoms; // saves ~5,500 gas
-        uint256 randomAtIndex;
 
         // yul saves ~10M gas
         assembly {
             let memoryPos
             let newWinnerPos
 
-            // arrayTo[toIndex] = arrayFrom[fromIndex]
-            function storeToFrom(arrayTo, toIndex, arrayFrom, fromIndex) {
-                mstore(add(arrayTo, toIndex), mload(add(arrayFrom, fromIndex)))
-            }
             // current data <-> last data
             function swapCurrentAndLast(currentIndexPos, array) {
-                let current := mload(add(array, currentIndexPos))
-                let length := mload(array)
-                let lastElemPos := mul(length, 0x20)
+                let lastElemPos := mul(mload(array), 0x20)
                 // array[i] = array[array.last]
-                storeToFrom(array, currentIndexPos, array, lastElemPos)
+                // array[currentIndexPos] = array[lastElemPos]
+                mstore(
+                    add(array, currentIndexPos),
+                    mload(add(array, lastElemPos))
+                )
                 // array[array.last] = current
-                mstore(add(array, lastElemPos), current)
+                mstore(
+                    add(array, lastElemPos),
+                    mload(add(array, currentIndexPos))
+                )
             }
 
             for {
@@ -87,16 +92,25 @@ contract TransformAndPickAddress {
                 //  - index at 0 is array.length
                 //  - index of data stored starts at 1
                 memoryPos := mul(add(i, 1), 0x20)
-                // reads: randoms_[i]
-                randomAtIndex := mload(add(randoms_, memoryPos))
-                // add 1 as addresses[] is in memory
+
+                // add 1 to index as addresses[] is in memory
                 newWinnerPos := mul(
-                    add(mod(randomAtIndex, amountOfWinners), 1),
+                    add(
+                        mod(
+                            // reads: randoms_[i]
+                            mload(add(randoms_, memoryPos)),
+                            participants
+                        ),
+                        1
+                    ),
                     0x20
                 )
 
                 // winners[i] = addresses[newWinnerPos]
-                storeToFrom(winners, memoryPos, addresses, newWinnerPos)
+                mstore(
+                    add(winners, memoryPos),
+                    mload(add(addresses, newWinnerPos))
+                )
                 // addresses[newWinnerPos] <-> addresses[array.last]
                 swapCurrentAndLast(newWinnerPos, addresses)
                 // addresses.pop() - deletes addresses[array.last]
