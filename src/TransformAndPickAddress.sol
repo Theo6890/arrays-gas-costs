@@ -60,26 +60,31 @@ contract TransformAndPickAddress {
 
         // yul saves ~10M gas
         assembly {
-            let wordIndex
+            let memoryPos
 
-            // for memory array index 0 is length, then data stored from 1 to length
             for {
-                let i := 1
-            } lt(i, add(amountOfWinners, 1)) {
+                let i := 0
+            } lt(i, amountOfWinners) {
                 i := add(i, 1)
             } {
-                wordIndex := mul(i, 0x20)
+                // memory array:
+                //  - index at 0 is array.length
+                //  - index of data stored starts at 1
+                memoryPos := mul(add(i, 1), 0x20)
 
                 // reads: randoms_[i]
-                randomAtIndex := mload(add(randoms_, wordIndex))
+                randomAtIndex := mload(add(randoms_, memoryPos))
 
                 // memory position, position in calldata, size of data in calldata
                 calldatacopy(
-                    add(winners, wordIndex), // copy to memory at: winners[i]
+                    // copy to memory at: winners[i]
+                    add(winners, memoryPos),
+                    // calldata position of: addresses[randomAtIndex % amountOfWinners]
                     add(
                         addresses.offset,
-                        mul(mod(randomAtIndex, amountOfWinners), 0x20) // a uint256 is 32 bytes long == 0x20
-                    ), // calldata position of: addresses[randomAtIndex % amountOfWinners]
+                        // in calldata, index of data stored starts at 0
+                        mul(mod(randomAtIndex, amountOfWinners), 0x20)
+                    ),
                     0x20
                 )
             }
