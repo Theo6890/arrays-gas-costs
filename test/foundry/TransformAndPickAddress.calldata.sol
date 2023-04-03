@@ -66,7 +66,7 @@ contract TransformAndPickAddressTest is Test {
         instance.setRandoms(randoms_27_000);
 
         address[] memory result = instance
-            .YUL_transformAndPick_parameterIn_calldata(
+            .YUL_transformAndPick_removeSelectedWinners_inMemory(
                 addresses_50_000,
                 27_000
             );
@@ -79,7 +79,7 @@ contract TransformAndPickAddressTest is Test {
         instance.setRandoms(randoms_22_000);
 
         address[] memory result = instance
-            .YUL_transformAndPick_parameterIn_calldata(
+            .YUL_transformAndPick_removeSelectedWinners_inMemory(
                 addresses_40_000,
                 22_000
             );
@@ -92,7 +92,7 @@ contract TransformAndPickAddressTest is Test {
         instance.setRandoms(randoms_19_000);
 
         address[] memory result = instance
-            .YUL_transformAndPick_parameterIn_calldata(
+            .YUL_transformAndPick_removeSelectedWinners_inMemory(
                 addresses_35_000,
                 19_000
             );
@@ -105,7 +105,7 @@ contract TransformAndPickAddressTest is Test {
         instance.setRandoms(randoms_11_000);
 
         address[] memory result = instance
-            .YUL_transformAndPick_parameterIn_calldata(
+            .YUL_transformAndPick_removeSelectedWinners_inMemory(
                 addresses_30_000,
                 11_000
             );
@@ -118,7 +118,7 @@ contract TransformAndPickAddressTest is Test {
         instance.setRandoms(randoms_5_000);
 
         address[] memory result = instance
-            .YUL_transformAndPick_parameterIn_calldata(
+            .YUL_transformAndPick_removeSelectedWinners_inMemory(
                 addresses_20_000,
                 5_000
             );
@@ -131,7 +131,7 @@ contract TransformAndPickAddressTest is Test {
         instance.setRandoms(randoms_2_300);
 
         address[] memory result = instance
-            .YUL_transformAndPick_parameterIn_calldata(
+            .YUL_transformAndPick_removeSelectedWinners_inMemory(
                 addresses_10_000,
                 2_300
             );
@@ -144,7 +144,10 @@ contract TransformAndPickAddressTest is Test {
         instance.setRandoms(randoms_834);
 
         address[] memory result = instance
-            .YUL_transformAndPick_parameterIn_calldata(addresses_5_000, 834);
+            .YUL_transformAndPick_removeSelectedWinners_inMemory(
+                addresses_5_000,
+                834
+            );
         assertEq(result.length, 834);
     }
 
@@ -154,7 +157,10 @@ contract TransformAndPickAddressTest is Test {
         instance.setRandoms(randoms_124);
 
         address[] memory result = instance
-            .YUL_transformAndPick_parameterIn_calldata(addresses_1_000, 124);
+            .YUL_transformAndPick_removeSelectedWinners_inMemory(
+                addresses_1_000,
+                124
+            );
         assertEq(result.length, 124);
     }
 
@@ -164,7 +170,10 @@ contract TransformAndPickAddressTest is Test {
         instance.setRandoms(randoms_75);
 
         address[] memory result = instance
-            .YUL_transformAndPick_parameterIn_calldata(addresses_500, 75);
+            .YUL_transformAndPick_removeSelectedWinners_inMemory(
+                addresses_500,
+                75
+            );
         assertEq(result.length, 75);
     }
 }
