@@ -69,7 +69,7 @@ contract TransformAndPickAddress {
 
             // current data <-> last data
             function swapCurrentAndLast(currentIndexPos, array) {
-                let lastElemPos := mul(mload(array), 0x20)
+                let lastElemPos := shl(5, mload(array))
                 // array[i] = array[array.last]
                 // array[currentIndexPos] = array[lastElemPos]
                 mstore(
@@ -91,19 +91,12 @@ contract TransformAndPickAddress {
                 // memory array:
                 //  - index at 0 is array.length
                 //  - index of data stored starts at 1
-                memoryPos := mul(add(i, 1), 0x20)
+                memoryPos := shl(5, add(i, 1))
 
                 // add 1 to index as addresses[] is in memory
-                newWinnerPos := mul(
-                    add(
-                        mod(
-                            // reads: randoms_[i]
-                            mload(add(randoms_, memoryPos)),
-                            participants
-                        ),
-                        1
-                    ),
-                    0x20
+                newWinnerPos := shl(
+                    5,
+                    add(mod(mload(add(randoms_, memoryPos)), participants), 1)
                 )
 
                 // winners[i] = addresses[newWinnerPos]
