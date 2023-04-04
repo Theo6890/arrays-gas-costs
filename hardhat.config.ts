@@ -33,10 +33,26 @@ const config: HardhatUserConfig = {
                 mnemonic: process.env.SEED,
             },
         },
+        arbitrumTestnet: {
+            url: process.env.RPC_URL,
+            accounts: {
+                mnemonic: process.env.SEED,
+            },
+            blockGasLimit: 100000000,
+            gasPrice: 20000000000,
+            gas: 80000000,
+        },
+        mumbai: {
+            url: process.env.MUMBAI_RPC,
+            accounts: {
+                mnemonic: process.env.SEED,
+            },
+        },
     },
     etherscan: {
         apiKey: {
-            bsc: process.env.BSC_SCAN_KEY ?? '',
+            arbitrumGoerli: process.env.ARBITRUM_KEY ?? '',
+            polygonMumbai: process.env.POLYGON_KEY ?? '',
         },
     },
     solidity: {
