@@ -5,10 +5,38 @@ contract TransformPick {
     uint256[] public randoms;
     address[] public result;
 
+    uint256 public lastSalt;
+
     event Winners(address[] winners);
 
-    function produceFakeRandoms(uint256 i, uint256 amount) public {
-        for (i; i < amount; ++i) randoms.push(12489031409234 + i);
+    // loop from i to amount while pusing at each iteration 12489031409234 + i
+    function produceFakeRandoms(uint256 amount) public {
+        assembly {
+            // we put winners.slot into memory since we need to hash the value
+            // an array is saved from keccak(winners.slot)
+            let randomsSlot := randoms.slot
+            mstore(0x00, randomsSlot)
+
+            let winnersLocation := keccak256(0x00, 0x20)
+            let oldArrayLen := sload(randomsSlot)
+
+            for {
+                let i := 0
+            } lt(i, amount) {
+                i := add(i, 1)
+            } {
+                // increase length
+                sstore(randomsSlot, add(oldArrayLen, 1))
+
+                // winners[winners.length - 1] = 12489031409234 + winners.length
+                sstore(
+                    add(winnersLocation, oldArrayLen),
+                    add(12489031409234, oldArrayLen)
+                )
+
+                oldArrayLen := add(oldArrayLen, 1)
+            }
+        }
     }
 
     function transformRandomsAndPickWinners(

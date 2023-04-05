@@ -17,7 +17,7 @@ contract TransformPick_produceFakeRandoms is Script {
             0xBffEaf52DB22A9D73fd2882975b446e8fE8f60dc
         );
 
-        transform.produceFakeRandoms(0, 10_000);
+        transform.produceFakeRandoms(1_000);
 
         vm.stopBroadcast();
     }
