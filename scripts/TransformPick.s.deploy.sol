@@ -5,7 +5,7 @@ import "forge-std/Script.sol";
 import {TransformPick} from "../src/TransformPick.sol";
 
 /**
-* @dev forge script scripts/TransformPick.s.deploy.sol:TransformPick_deploy --rpc-url $MUMBAI_RPC --broadcast --verify -vvvv --optimise --optimizer-runs 200 -w
+* @dev forge script scripts/TransformPick.s.deploy.sol:TransformPick_deploy --rpc-url $MUMBAI_RPC --broadcast --verify -vvvv --optimize --optimizer-runs 20000 -w
 *
 * @dev If verification fails:
 * forge verify-contract \

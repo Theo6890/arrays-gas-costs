@@ -20,12 +20,15 @@ contract TransformPick_transformPick is Script, Test {
             0x8994007BA2e02248225997454e734430265e5045
         );
 
-        address[] memory addrs = new address[](1000);
-        for (uint256 i = 0; i < 1000; ++i) {
+        uint256 participants = 1_000;
+        uint256 winners = 100;
+
+        address[] memory addrs = new address[](participants);
+        for (uint256 i = 0; i < participants; ++i) {
             addrs[i] = makeAddr(string.concat("addr", Strings.toString(i)));
         }
 
-        transform.transformRandomsAndPickWinners(addrs, 100);
+        transform.transformRandomsAndPickWinners(addrs, winners);
 
         vm.stopBroadcast();
     }
