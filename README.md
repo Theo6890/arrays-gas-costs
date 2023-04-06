@@ -106,3 +106,20 @@ Transforming while picking address costs 3x more gas than transforming uints onl
 | --------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------- | ------------------------------------------- | --------------------------------------------- |
 | YUL_transformRandoms_result_to_storage + YUL_pickAfterTransform_result_to_storage | 1,712,509 + 1,757,123 = **3,469,632** | 22,233,9631 + 23,2586,829 = **454,926,460** | 113,063,325 + 11,5887,567 = **228,950,892** | 620,880,387 + 69,4970,065 = **1,315,850,452** |
 | YUL_transformAndPick_result_to_storage                                            | 11,299,318                            | 468,011,832                                 | 342,434,153                                 | 1,170,679,037                                 |
+
+## Deploy and Test On Local Mainnet
+
+Use anvil to run local forked node: `anvil --fork-url https://rpc.ankr.com/fantom -m $SEED`
+
+Deploy script to local node: `forge script TransformPick_deploy --broadcast --rpc-url http://localhost:8545`
+
+Produce fake randoms: `forge script TransformPick_produceFakeRandoms --broadcast --rpc-url http://localhost:8545 -g 100`
+
+Tranform & Pick winners: `forge script TransformPick_transformPick --broadcast --rpc-url http://localhost:8545 -g 100`
+
+Use cast to interact with deployed contract:
+
+```
+cast call 0xBffEaf52DB22A9D73fd2882975b446e8fE8f60dc \
+  "getAmountOfRandoms()(uint256)"
+```
