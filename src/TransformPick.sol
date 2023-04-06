@@ -9,34 +9,35 @@ contract TransformPick {
 
     event Winners(address[] winners);
 
+    function getAmountOfRandoms() external view returns (uint256) {
+        return randoms.length;
+    }
+
+    function getRandoms() external view returns (uint256[] memory) {
+        return randoms;
+    }
+
     // loop from i to amount while pusing at each iteration 12489031409234 + i
     function produceFakeRandoms(uint256 amount) public {
+        uint256[] memory randoms_ = new uint256[](amount);
         assembly {
             // we put winners.slot into memory since we need to hash the value
             // an array is saved from keccak(winners.slot)
-            let randomsSlot := randoms.slot
-            mstore(0x00, randomsSlot)
 
-            let winnersLocation := keccak256(0x00, 0x20)
-            let oldArrayLen := sload(randomsSlot)
+            let memoryPos
 
             for {
                 let i := 0
             } lt(i, amount) {
                 i := add(i, 1)
             } {
-                // increase length
-                sstore(randomsSlot, add(oldArrayLen, 1))
+                memoryPos := shl(5, add(i, 1))
 
-                // winners[winners.length - 1] = 12489031409234 + winners.length
-                sstore(
-                    add(winnersLocation, oldArrayLen),
-                    add(12489031409234, oldArrayLen)
-                )
-
-                oldArrayLen := add(oldArrayLen, 1)
+                mstore(add(randoms_, memoryPos), add(12489031409234, i))
             }
         }
+
+        randoms = randoms_;
     }
 
     function transformRandomsAndPickWinners(
